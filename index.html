@@ -120,7 +120,8 @@
 
       canvas.style.width = e.data.width + "px";
       canvas.style.height = e.data.height + "px";
-      canvas.transformOrigin = "top";
+      canvas.scale = e.data.height / 600;
+      canvas.transformOrigin = "0 0";
 
       let resolution = {
         width: e.data.width,
