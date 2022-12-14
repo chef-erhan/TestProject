@@ -25,6 +25,8 @@
     //var fullscreenButton = document.querySelector("#unity-fullscreen-button");
     var warningBanner = document.querySelector("#unity-warning");
 
+    var unity;
+
     // Shows a temporary message banner/ribbon for a few seconds, or
     // a permanent error message on top of the canvas if type=='error'.
     // If type=='warning', a yellow highlight color is used.
@@ -88,7 +90,7 @@
     } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
-        canvas.style.width = "960px";
+        canvas.style.width = "450px";
         canvas.style.height = "600px";
     }
 
@@ -100,6 +102,7 @@
         createUnityInstance(canvas, config, (progress) => {
             progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
+            unity = unityInstance;
             loadingBar.style.display = "none";
             // fullscreenButton.onclick = () => {
             //   unityInstance.SetFullscreen(1);
@@ -117,8 +120,18 @@
 
             canvas.style.width = e.data.width + "px";
             canvas.style.height = e.data.height + "px";
+            canvas.transformOrigin = "top";
+
+            let resolution = {
+                width: e.data.width,
+                height: e.data.height
+            };
+            // unity.SendMessage("WebGLManager", "SetResolution", JSON.stringify(resolution));
+
+            unity.SendMessage("Bridge", "SetCanvasReferenceResolution", JSON.stringify(resolution));
         }
     }
+
 
 </script>
 </body>
