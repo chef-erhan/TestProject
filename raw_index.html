@@ -113,15 +113,16 @@
     };
     document.body.appendChild(script);
 
+
     window.onmessage = function (e) {
-        if (e.data) {
+        if (e.data.message == "SetResolution") {
 
             console.log("WebGL Script!!! width: " + e.data.width + " height: " + e.data.height);
 
             canvas.style.width = e.data.width + "px";
             canvas.style.height = e.data.height + "px";
-            canvas.scale = e.data.height / 600;
-            canvas.transformOrigin = "0 0";
+            canvas.style.scale = 600 / e.data.height;
+            canvas.style.transformOrigin = "0 0";
 
             let resolution = {
                 width: e.data.width,
@@ -130,10 +131,22 @@
             // unity.SendMessage("WebGLManager", "SetResolution", JSON.stringify(resolution));
 
             unity.SendMessage("Bridge", "SetCanvasReferenceResolution", JSON.stringify(resolution));
+        } else if (e.data.message == "SetUserInteractionData") {
+            unity.SendMessage("Bridge", "SetUserInteractionData", JSON.stringify(e.data.jsonString));
         }
     }
 
-
+    // function sendMessageToUnity() {
+    //     // Get the input field
+    //     const txtMessage = document.getElementById("txtMessage");
+    //     // Get the message
+    //     const message = txtMessage.value;
+    //     // Clear the input field
+    //     txtMessage.value = "";
+    //     // Send message to the Unity scene
+    //     // Params: "Target object in the scene", "Function name", "Parameters"
+    //     myUnity.SendMessage("Bridge", "ReceiveMessageFromPage", message);
+    // }
 </script>
 </body>
 </html>
